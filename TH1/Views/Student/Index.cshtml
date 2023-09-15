@@ -4,6 +4,20 @@
 @{
 }
 
+@{
+    ViewData["Title"] = "Student List";
+    Layout = "~/Views/Shared/MyLayout.cshtml";
+}
+
+@section Scripts{
+    <script>
+        var table = document.querySelector("table");
+        table.onclick = function onTableClick() {
+            table.style = "background-color: yellow;"
+        }
+    </script>
+}
+
 @model IEnumerable<Student>
 <a href="/Admin/Student/Add" class="btn btn-primary">Create Student</a>
 <table class="table table-striped">
