@@ -55,6 +55,13 @@
                 <textarea asp-for="Address" class="form-control" placeholder="Địa chỉ"></textarea>
             </div>
         </div>
+        <div style="margin-top:7px" class="form-group row">
+            <label asp-for="Avatar" class="col-sm-2 col-form-label">Avatar</label>
+            <div class="col-sm-10">
+                <input id="avatarfile" name="avatarfile" type="file" class="form-control" onchange="ChangeFile()" />
+                <input type="text" asp-for="Avatar" class="form-control d-none" />
+            </div>
+        </div>
         <div style="margin-top:10px" class="form-group row">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Create</button>
@@ -62,3 +69,11 @@
         </div>
     </form>
 </div>
+<script>
+    function ChangeFile(e) {
+        var currentFile = document.querySelector('#avatarfile').files[0];
+        var fileName = currentFile.name;
+        document.querySelector('input[name="AvatarUrl"]').value = fileName;
+        console.log(document.querySelector('input[name="AvatarUrl"]').value);
+    }
+</script>

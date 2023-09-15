@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics;
 using TH1.Models;
+using TH1.Services.Interfaces;
 
 namespace TH1.Controllers
 {
     public class StudentController : Controller
     {
         private List<Student> listStudents = new List<Student>();
+        readonly IBufferedFileUploadService _bufferedFileUploadService;
         public StudentController()
         {
             listStudents = new List<Student>()
@@ -40,11 +43,50 @@ namespace TH1.Controllers
         }
 
         [HttpPost("/Admin/Student/Add")]
-        public IActionResult Create(Student s)
+        public async Task<IActionResult> Create(Student s, IFormFile avatarfile)
+        {
+            //
+            // Handling Upload avatar file:
+            // - Avatar files will store in ~/wwwroot/UploadFiles/
+            // 
+            if (avatarfile != null)
+                try
+                {
+                    if (await _bufferedFileUploadService.UploadFile(avatarfile))
+                    {
+                        Debug.WriteLine("File Upload Successful");
+                        ViewBag.Message = "File Upload Successful";
+                    }
+                    else
+                    {
+                        Debug.WriteLine("File Upload Failed");
+                        ViewBag.Message = "File Upload Failed";
+                    }
+                }
+                catch
+                {
+                    Debug.WriteLine("File Upload Failed");
+                    //Log ex
+                    ViewBag.Message = "File Upload Failed";
+                }
+
+            //
+            // Handling store The new student
+            //
+            s.Id = listStudents.Last<Student>().Id + 1;
+
+            // Handle Avatar Url. 
+            if (s.Avatar != null)
+                s.Avatar = Path.Combine("UploadedFiles", s.Avatar);
+
+            listStudents.Add(s);
+            return View("Index", listStudents);
+        }
+        /*public IActionResult Create(Student s)
         {
             s.Id=listStudents.Last<Student>().Id + 1;
             listStudents.Add(s);
             return View("Index", listStudents);
-        }
+        }*/
     }
 }
