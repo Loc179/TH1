@@ -16,7 +16,6 @@ namespace TH1.ViewComponents
                 new MenuItem(){Id=4,Name="Courses",Link="Courses/List"}
             };
         }
-
         public async Task<IViewComponentResult> InvokeAsync()
         {
             return View("RenderLeftMenu", MenuItems);
