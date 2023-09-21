@@ -82,11 +82,6 @@ namespace TH1.Controllers
             listStudents.Add(s);
             return View("Index", listStudents);
         }
-        /*public IActionResult Create(Student s)
-        {
-            s.Id=listStudents.Last<Student>().Id + 1;
-            listStudents.Add(s);
-            return View("Index", listStudents);
-        }*/
+        
     }
 }
